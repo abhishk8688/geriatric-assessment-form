@@ -4,7 +4,7 @@ Take-home assignment implementation of a single-page Geriatric Care Assessment f
 
 ## Live Demo
 
-- Deployment URL: [https://geriatric-assessment-form.vercel.app](https://geriatric-assessment-form.vercel.app) (replace with your deployed URL)
+- Deployment URL: [https://geriatric-assessment-form-abhishek.netlify.app/](https://geriatric-assessment-form-abhishek.netlify.app/)
 
 ---
 
