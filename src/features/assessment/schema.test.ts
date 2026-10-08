@@ -50,4 +50,25 @@ describe('assessmentSchema boundary validation', () => {
     const result = assessmentSchema.safeParse(input);
     expect(result.success).toBe(true);
   });
+
+  it('produces exactly 9 errors on an empty form with no cross-field noise', async () => {
+    const { schemaResolver } = await import('@mantine/form');
+    const resolver = schemaResolver(assessmentSchema);
+    const emptyForm = {
+      mrn: '',
+      patientName: '',
+      dateOfBirth: '',
+      assessmentDate: '',
+      mobility: null,
+      barthelIndex: '' as unknown as number,
+      medicationCount: '' as unknown as number,
+      pharmacistReviewRequested: false,
+      followUpDate: '',
+      consentObtained: false,
+    };
+    const errors = await resolver(emptyForm);
+    const errorKeys = Object.keys(errors);
+    expect(errorKeys).toHaveLength(9);
+    expect(errorKeys).not.toContain('pharmacistReviewRequested');
+  });
 });

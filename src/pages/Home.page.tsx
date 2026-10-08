@@ -1,11 +1,14 @@
+import { Box, Group } from '@mantine/core';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
-import { Welcome } from '../components/Welcome/Welcome';
+import { GeriatricAssessmentForm } from '../features/assessment/GeriatricAssessmentForm';
 
 export function HomePage() {
   return (
-    <>
-      <Welcome />
-      <ColorSchemeToggle />
-    </>
+    <Box py="md">
+      <Group justify="flex-end" px="md">
+        <ColorSchemeToggle />
+      </Group>
+      <GeriatricAssessmentForm />
+    </Box>
   );
 }
