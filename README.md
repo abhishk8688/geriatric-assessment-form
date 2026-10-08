@@ -37,6 +37,10 @@ yarn install
 ### Running Locally
 
 ```bash
+corepack yarn dev
+# or
+npm run dev
+# or if yarn is globally installed:
 yarn dev
 ```
 
@@ -47,13 +51,17 @@ The application runs at `http://localhost:5173`.
 To run the complete verification suite (typecheck, oxlint, stylelint, unit/integration tests, and production build):
 
 ```bash
-yarn test
+corepack yarn test
+# or
+npm run test
 ```
 
 To run Vitest tests directly:
 
 ```bash
-yarn vitest
+corepack yarn vitest
+# or
+npm run vitest
 ```
 
 ---
