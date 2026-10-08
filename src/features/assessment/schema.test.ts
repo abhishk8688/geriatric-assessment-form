@@ -1,0 +1,53 @@
+import { describe, expect, it } from 'vitest';
+import { SAMPLE_PATIENT } from './fixtures';
+import { assessmentSchema } from './schema';
+
+describe('assessmentSchema boundary validation', () => {
+  it('accepts a patient who turns exactly 60 on the assessment date', () => {
+    const input = {
+      ...SAMPLE_PATIENT,
+      assessmentDate: '2026-08-07',
+      dateOfBirth: '1966-08-07',
+    };
+    const result = assessmentSchema.safeParse(input);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects a patient who is one day short of 60 on the assessment date', () => {
+    const input = {
+      ...SAMPLE_PATIENT,
+      assessmentDate: '2026-08-07',
+      dateOfBirth: '1966-08-08',
+    };
+    const result = assessmentSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    const issues = !result.success ? result.error.issues : [];
+    const dateIssue = issues.find((i) => i.path.includes('dateOfBirth'));
+    expect(dateIssue?.message).toBe('This pathway is for patients aged 60 and over');
+  });
+
+  it('rejects polypharmacy (5 or more medications) when pharmacist review is unchecked', () => {
+    const input = {
+      ...SAMPLE_PATIENT,
+      medicationCount: 5,
+      pharmacistReviewRequested: false,
+    };
+    const result = assessmentSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    const issues = !result.success ? result.error.issues : [];
+    const reviewIssue = issues.find((i) => i.path.includes('pharmacistReviewRequested'));
+    expect(reviewIssue?.message).toBe(
+      'Five or more medications is polypharmacy: a pharmacist review is required'
+    );
+  });
+
+  it('accepts 4 medications when pharmacist review is unchecked', () => {
+    const input = {
+      ...SAMPLE_PATIENT,
+      medicationCount: 4,
+      pharmacistReviewRequested: false,
+    };
+    const result = assessmentSchema.safeParse(input);
+    expect(result.success).toBe(true);
+  });
+});
